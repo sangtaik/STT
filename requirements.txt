@@ -1,0 +1,13 @@
+librosa==0.8.1
+matplotlib==3.2.2
+numpy==1.21.6
+pandas==1.3.5
+requests==2.23.0
+scipy==1.4.1
+sklearn==0.0
+SoundFile==0.10.3.post1
+tensorboard==2.8.0
+tensorflow==2.8.2
+tensorflow-hub==0.12.0
+tqdm==4.64.0
+xgboost==0.90
