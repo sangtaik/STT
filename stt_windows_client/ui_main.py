@@ -45,8 +45,20 @@ class Ui_MainWindow(object):
         self.grPCM.setObjectName("grPCM")
         self.verticalLayout.addWidget(self.grPCM)
         self.horizontalLayout.addWidget(self.frame)
+        
+        #  대사 Label
+        self.label_stt = QtWidgets.QLabel(self.frame)
+        self.label_stt.setObjectName("label_stt")
+#         self.label_stt.setGeometry(QtCore.QRect(120, 400, , 31))        
+#         self.label_stt.setText("Test set Text") #텍스트 변환
+#         self.label_stt.setFont(QtGui.QFont("맑은고딕",10)) #폰트,크기 조절
+#         self.label_stt.setStyleSheet("Color : green") #글자색 변환
+        self.verticalLayout.addWidget(self.label_stt)
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
 
+        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -55,4 +67,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "frequency data (FFT):"))
         self.label_2.setText(_translate("MainWindow", "raw data (PCM):"))
+        self.label_stt.setText(_translate("MainWindow", "audio to text"))
+        
+    
 from pyqtgraph import PlotWidget
