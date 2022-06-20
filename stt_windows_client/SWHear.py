@@ -9,6 +9,7 @@ import pyaudio
 import time
 import numpy as np
 import threading
+import speech_recognition as sp_rec
 
 def getFFT(data,rate):
     """Given some data and rate, returns FFTfreq and FFT (half)."""
@@ -43,6 +44,7 @@ class SWHear():
         self.chunksRead=0
         self.device=device
         self.rate=rate
+        
 
     ### SYSTEM TESTS
 

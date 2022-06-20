@@ -12,6 +12,9 @@ tensorflow-hub==0.12.0
 tqdm==4.64.0
 xgboost==0.90
 jupyter==1.0.0
+datasets==2.2.2
 transformers==4.19.4
-torch==1.11.0
-jiwer==2.3.0
+jiwer==2.30
+SpeechRecognition==3.8.1
+pipwin==0.5.2
+tensorboard==2.8.0
