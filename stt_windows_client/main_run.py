@@ -65,13 +65,6 @@ class VoiceWorker(QtCore.QObject):
             time.sleep(1)
 
             
-# @asyncio.coroutine
-# async def open_program(cmd):
-#     print("cmd starting")
-# #     os.system(cmd)
-#     os.startfile(cmd)
-#     await asyncio.sleep(5)
-#     print("cmd started")
 
     
 class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
@@ -95,7 +88,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
         self.close_button.clicked.connect(self.do_list_event)
         self.worker.textChanged.connect(self.do_list)
         
-    def open_program(cmd):
+    def open_program(self, cmd):
         print("{} starting now", cmd)
         # 이슈 : os.system(cmd)은 파일이 열린 후에도 아래 코드가 실행이 안된다.
         # 오픈한 프로그램을 닫아야지만 다음 줄 코드가 실행이 된다.
@@ -108,64 +101,74 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
     def do_list(self, text):
         self.textBrowser.setText(text)
       
-        text = "파워포인트 열어줘"
-        print(text)
-
         keyboard = Controller()
 
-        if text == "파워포인트 열어줘":
-            print("powerpoint openning now")
+        if text in "피피티 시작":
             cmd = 'test.pptx'
-            os.system(cmd)
-        elif text == "슬라이드쇼 시작":
+            self.open_program(cmd)
+            time.sleep(5) # wait for 5 sec
+            print("key press : esc")  # 오피스365 가입하라는 창을 제거하기 위해서
+            keyboard.press(Key.esc)
+        elif text in "피피티 종료":
+            # send ALT+F4 in the same time, and then send space, 
+            # (be carful, this will close any current open window)
+            keyboard.send("alt+F4, space")  
+        elif text in "슬라이드쇼 시작":
             keyboard.press(Key.f5)
             keyboard.release(Key.f5)
-        elif text == "슬라이드쇼 종료":
-            keyboard.press(Key.f5)
-            keyboard.release(Key.f5)
-        elif text == "다음 페이지":
+        elif text in "슬라이드쇼 종료":
+            keyboard.press(Key.esc)
+        elif text in "다음 페이지":
             keyboard.press(Key.right)
             keyboard.release(Key.right)
-        elif text == "이전 페이지":
+        elif text in "이전 페이지":
             keyboard.press(Key.left)
             keyboard.release(Key.left)
-
+        elif text in "처음페이지":
+            keyboard.press(Key.home)
+        elif text in "마지막페이지":
+            keyboard.press(Key.end)
+        
 
     def do_list_event(self, event):
         
         cmd_list = ['피피티 시작', '슬라이드쇼 시작', '다음 페이지'
                     , '이전 페이지', '처음페이지로', '마지막페이지', '슬라이드쇼 종료', '피피티 종료']  
+#         cmd_list = ['피피티 시작합니다.', '아 슬라이드쇼 시작합니다', '다음 페이지로'
+#                     , '이전 페이지', '처음페이지로', '마지막페이지', '슬라이드쇼 종료', '피피티 종료']  
         keyboard = Controller()
         for text in cmd_list:
             print(text)
             time.sleep(1) # wait for 5 sec
             if text == "피피티 시작":
-                cmd = 'test.pptx'  .
-                open_program(cmd)
-                time.sleep(5) # wait for 5 sec
-                print("key press : esc")  # 오피스365 가입하라는 창을 제거하기 위해서
-                keyboard.press(Key.esc)
+                    cmd = 'test.pptx'
+                    self.open_program(cmd)
+                    time.sleep(5) # wait for 5 sec
+                    print("key press : esc")  # 오피스365 가입하라는 창을 제거하기 위해서
+                    keyboard.press(Key.esc)
             elif text == "피피티 종료":
-                keyboard.press(Key.f5)
-                keyboard.release(Key.f5)    
+                # send ALT+F4 in the same time, and then send space, 
+                # (be carful, this will close any current open window)
+                keyboard.press(Key.alt)
+                keyboard.press(Key.f4) 
+                keyboard.release(Key.alt)
+                keyboard.release(Key.f4)
             elif text == "슬라이드쇼 시작":
                 keyboard.press(Key.f5)
                 keyboard.release(Key.f5)
             elif text == "슬라이드쇼 종료":
-                keyboard.press(Key.f5)
-                keyboard.release(Key.f5)
+                keyboard.press(Key.esc)
             elif text == "다음 페이지":
                 keyboard.press(Key.right)
                 keyboard.release(Key.right)
             elif text == "이전 페이지":
                 keyboard.press(Key.left)
                 keyboard.release(Key.left)
-            elif text == "처음페이지로":
-                keyboard.press(Key.left)
-                keyboard.release(Key.left)
+            elif text == "처음페이지":
+                keyboard.press(Key.home)
             elif text == "마지막페이지":
-                keyboard.press(Key.left)
-                keyboard.release(Key.left)
+                keyboard.press(Key.end)
+
         
     
     def update(self):
