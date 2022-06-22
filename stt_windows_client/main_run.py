@@ -49,6 +49,7 @@ class VoiceWorker(QtCore.QObject):
         rec = sp_rec.Recognizer()
         mic = sp_rec.Microphone()
         sr = 16000
+        with mic as source: rec.adjust_for_ambient_noise(source)
         
         while self.isRunning == True:
             print("Say somethig!")
@@ -270,6 +271,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
         
     
     def update(self):
+        """
         if not self.ear.data is None and not self.ear.fft is None:
             pcmMax=np.max(np.abs(self.ear.data))
             if pcmMax>self.maxPCM:
@@ -279,7 +281,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
             pen=pyqtgraph.mkPen(color='b')
             self.grPCM.plot(self.ear.datax ,self.ear.data ,pen=pen ,clear=True)
             pen=pyqtgraph.mkPen(color='r')
-  
+        """
         # 라벨에 텍스트 표시
         current_time = str(datetime.datetime.now().time())
         self.label_time.setText(current_time)
