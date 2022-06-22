@@ -41,11 +41,12 @@ class Ui_MainWindow(object):
         self.grPCM = PlotWidget(self.frame)
         self.grPCM.setObjectName("grPCM")
         self.verticalLayout.addWidget(self.grPCM)
-        self.start_button = QtWidgets.QPushButton("Start")
-        self.close_button = QtWidgets.QPushButton("Close")
-        
+        self.start_button = QtWidgets.QPushButton("음성인식 시작(Start)")
+        self.stop_button = QtWidgets.QPushButton("음성인식 종료(Stop)")
+        self.test_button = QtWidgets.QPushButton("명령어 동작 테스트(Command List Test)")
         self.verticalLayout.addWidget(self.start_button)
-        self.verticalLayout.addWidget(self.close_button)
+        self.verticalLayout.addWidget(self.stop_button)
+        self.verticalLayout.addWidget(self.test_button)
         self.horizontalLayout.addWidget(self.frame)
 
         #  time Label
