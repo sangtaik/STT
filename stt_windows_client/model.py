@@ -4,6 +4,7 @@ import torch
 from unicode import join_jamos
 import re
 import sys
+from symspellpy import SymSpell, Verbosity
 
 from transformers import (
     Wav2Vec2CTCTokenizer,
@@ -18,9 +19,11 @@ class ServiceModel():
         if base=='jamo':
             vocab = 'vocab_jamos.json'
             model = 'jamo_base_model'
+            symspell_dict = "symspell_jamo_dict.txt"
         elif base=='char':
             vocab = 'vocab.json'
             model = 'char_base_model'
+            symspell_dict = "symspell_char_dict.txt"
         else:
             sys.exit("'jamo' or 'char'")
             
@@ -53,6 +56,10 @@ class ServiceModel():
             pad_token_id=self.processor.tokenizer.pad_token_id,
             vocab_size=len(self.processor.tokenizer)
         )
+
+        self.sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
+        
+        self.sym_spell.load_dictionary(symspell_dict, term_index=0, count_index=1, encoding='utf8')
 
     # def voice_sep(sig):
     #     sig = np.array(sig).flatten()
@@ -100,7 +107,8 @@ class ServiceModel():
         pred = self.model_forward(array)
         pred_str = self.pred_decode(pred)
         remove_pad_token = re.sub('<pad>','',pred_str[0])
-        join_jamo = join_jamos(remove_pad_token)
+        suggestion = self.sym_spell.lookup_compound(remove_pad_token, max_edit_distance=2)
+        join_jamo = join_jamos(suggestion[0].term)
         return join_jamo
     
     def one_shot(self, array):
@@ -109,7 +117,6 @@ class ServiceModel():
             return self.jamo_one_shot(array)
         elif base=='char':
             return self.char_one_shot(array)
-        
 
 if __name__ == '__main__':
 

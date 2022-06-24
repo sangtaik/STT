@@ -1,1 +1,0 @@
-"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE" /C C:\Users\sangt\AI_Training\STT\stt_windows_client\test.pptx
