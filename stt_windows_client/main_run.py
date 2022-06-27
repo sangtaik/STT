@@ -267,12 +267,20 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
         
         self.test_list = ['피피티 시작', '이에스씨 눌러', '슬라이드쇼 시작', '다음 페이지'
            , '이전 페이지', '3번째 페이지', '처음페이지로', '마지막페이지', '슬라이드쇼 종료', '피피티 종료'] 
-        self.cmd_list = ['피피티 시작(켜죠)', '피피티 종료(꺼죠)', '슬라이드쇼 시작(켜죠)', '슬라이드쇼 종료(끝)', '다음(뒤) 페이지(장)'
+        
+        
+#         self.cmd_list = ['피피티 시작(켜죠)', '피피티 종료(꺼죠)', '슬라이드쇼 시작(켜죠)', '슬라이드쇼 종료(끝)', '다음(뒤) 페이지(장)'
+#            , '이전(앞) 페이지(장)', '처음(첫, 시작) 페이지(장)', '마지막(끝) 페이지(장)', '이에스씨(창닫기) 실행(눌러)'
+                         
+        self.cmd_list = ['피피티 시작(켜줘)'
+#                          , '피피티 종료(꺼줘)' # 발음이 서로 인접된 문제때문에 켜줘와 꺼줘 구분이 잘 되지 않는다.
+                         , '슬라이드쇼 시작(켜죠)', '슬라이드쇼 종료(끝)', '다음(뒤) 페이지(장)'
            , '이전(앞) 페이지(장)', '처음(첫, 시작) 페이지(장)', '마지막(끝) 페이지(장)', '이에스씨(창닫기) 실행(눌러)'
 #                          , '<숫자>페이지(장) 이동(열어)'
                         ] 
         self.reg_list = [ '(?=(.*피피티|파워포인트.*){1,})(?=(.*시작|.*열어.*|.*켜.*){1,}).*'
-           , '(?=(.*피피티|파워포인트.*){1,})(?=(.*종료|.*끝|.*꺼.*){1,}).*'
+#            , '(?=(.*피피티|파워포인트.*){1,})(?=(.*종료|.*끝|.*꺼.*){1,}).*'
+           , ''
            , '(?=(.*슬라이드.*|.*슬라이드쇼.*|.*발표.*){1,})(?=(.*시작|열어,*|.*켜.*){1,}).*'
            , '(?=(.*슬라이드.*|.*슬라이드쇼.*|.*발표.*){1,})(?=(.*종료|끝,*|.*꺼.*){1,}).*'
            , '(?=(.*다음.*|.*뒤.*){1,})(?=(.*페이지|.*장){1,}).*'
@@ -280,7 +288,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
            , '(?=(.*처음.*|.*첫.*|.*시작.*){1,})(?=(.*페이지|.*장){1,}).*'
            , '(?=(.*마지막.*|.*끝.*){1,})(?=(.*페이지|.*장){1,}).*'
            , '(?=(.*이에스씨.*|.*창닫기.*){1,})(?=(.*눌러|.*실행){1,}).*']
-#            , '(?=(.*[0-9]페이지.*|.*[0-9]장.*){1,})(?=(.*이동|.*열어){1,}).*'
+#            , '(?=(.*[0-9]페이지.*|.*[0-9]장.*){1,})(?=(.*이동|.*열어){1,}).*'  # 추후 필요 시 구현할 기능
 
     def handleStarted(self):
         self.isMikeTest = False
@@ -355,14 +363,14 @@ class ExampleApp(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
             print("key press : esc")  # 오피스365 가입하라는 창을 제거하기 위해서
             keyboard.press(Key.esc)
             print(f"\t{self.reg_list[0]}: 실행완료")
-        elif re.match(self.reg_list[1], text) is not None:
-            # send ALT+F4 in the same time, and then send space, 
-            # (be carful, this will close any current open window)
-            keyboard.press(Key.alt)
-            keyboard.press(Key.f4) 
-            keyboard.release(Key.alt)
-            keyboard.release(Key.f4)
-            print(f"\t{self.reg_list[1]}: 실행완료")
+#         elif re.match(self.reg_list[1], text) is not None:
+#             # send ALT+F4 in the same time, and then send space, 
+#             # (be carful, this will close any current open window)
+#             keyboard.press(Key.alt)
+#             keyboard.press(Key.f4) 
+#             keyboard.release(Key.alt)
+#             keyboard.release(Key.f4)
+#             print(f"\t{self.reg_list[1]}: 실행완료")
         elif re.match(self.reg_list[2], text) is not None:
             keyboard.press(Key.f5)
             keyboard.release(Key.f5)
