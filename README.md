@@ -2,9 +2,9 @@
 
 [PPT Speech To Text Assistant : Korean Goal-Oriented Dialog Speech Corpus for Pretrained Speech Recognition of PowerPoint](https://github.com/sangtaik/STT)
 
-[Sang-Taik Jung](https://github.com/sangtaik/STT)<sup>1,2</sup>, [Mu-Jun Kim](https://github.com/Mu-jun/STT)<sup>1,3*</sup>, [Jae-Youn Park](https://github.com/jayo9901/)<sup>1,4</sup>
+[Sang-Taik Jung](https://github.com/sangtaik/STT)<sup>1,2</sup>, [Mu-Jun Kim](https://github.com/Mu-jun/STT)<sup>1,3</sup>, [Jae-Youn Park](https://github.com/jayo9901/)<sup>1,4</sup>
 
-<sup>1</sup> K-Digital Training - AI Youngwoo Global Training AI 6th.
+<sup>1</sup> K-Digital Training - AI Youngwoo Global Training AI 6th. <p>
 <sup>2</sup> App, Dataset preprocessing <p>
 <sup>3</sup> AI Modeling, AI Training <p>
 <sup>4</sup> Model Training Calibration, Dataset preprocessing.
@@ -35,17 +35,17 @@
 최종 데이터 셋 파일형식 : csv
 
 ### The dataset statistics
-명령어 음성(일반남녀) https://aihub.or.kr/aidata/30707
-한국어 음성 https://aihub.or.kr/aidata/105
-한국어 강의 음성 https://aihub.or.kr/aidata/30708
+명령어 음성(일반남녀) https://aihub.or.kr/aidata/30707 <p>
+한국어 음성 https://aihub.or.kr/aidata/105 <p>
+한국어 강의 음성 https://aihub.or.kr/aidata/30708 <p>
 
 
 ### The dataset structure
 아래와 같이 음성 파일명, 대사, 음성데이터 값을 csv 파일로 추출하여 최종 훈련 데이터셋으로 가공하였다.
 음성 파일 및 텍스트 파일이 있다면 전처리 폴더에 있는 XLSR_Wav2Vec2_colab_recursive_vocab_jamo.py 파일을 이용하여 추출할 수 있다.
 
-We export the csv file for Training with the following structure by some export folder .py file:
-forexample :  XLSR_Wav2Vec2_colab_recursive_vocab_jamo.py
+We export the csv file for Training with the following structure by some export folder .py file: <p>
+For Example :  XLSR_Wav2Vec2_colab_recursive_vocab_jamo.py <p>
 ```
 order_speech_ko1000_000.csv
 ...
@@ -61,9 +61,9 @@ script1_g_0044-6004-01-01-KSM-F-05-A.wav	이번 주 대체로 흐린지 궁금�
 2.  각 데이터 셋 자료의 라이선스 및 사용권에 대하여는 AI HUB(https://aihub.or.kr/aidata)를 참조하시고, 문의하시기 바랍니다.
 
 ```
-명령어 음성(일반남녀) https://aihub.or.kr/aidata/30707
-한국어 음성 https://aihub.or.kr/aidata/105
-한국어 강의 음성 https://aihub.or.kr/aidata/30708
+명령어 음성(일반남녀) [link] (https://aihub.or.kr/aidata/30707)
+한국어 음성 [link] (https://aihub.or.kr/aidata/105)
+한국어 강의 음성 [link] (https://aihub.or.kr/aidata/30708)
 ```
 
 1. we DOES NOT GUARANTEE THE ACCURACY, COMPLETENESS, INTEGRITY, QUALITY OR ADEQUACY OF THE MATERIALS, THUS ARE NOT LIABLE OR RESPONSIBLE FOR THE MATERIALS PROVIDED HERE.
@@ -72,7 +72,7 @@ script1_g_0044-6004-01-01-KSM-F-05-A.wav	이번 주 대체로 흐린지 궁금�
 
 `AIhub` dataset can be download from 
 ```
-KSM [here] https://aihub.or.kr/aidata/30707
+KSM [here] (https://aihub.or.kr/aidata/30707)
 KsponSpeech[here] (https://aihub.or.kr/aidata/105)
 KlecSpeech [here] (https://aihub.or.kr/aidata/30708)
 ```
@@ -173,8 +173,11 @@ pyinstaller --noconfirm --clean --distpath ./dist ^
 dist 폴더가 생성이 되고, dist\\main_run\\Assets에 모델 파일을 옮겨줘야 한다.
 참고로 Assets에 모델은 미리 생성해야 한다. 
 
-이후 , transformers 폴더만 수작업으로 파일을 옮겨준다. RuntimeError: Failed to import transformers.models.wav2vec2.processing_wav2vec2 because of the following error (look up to see its traceback):
-[Errno 2] No such file or directory: 'C:\\Users\\sangt\\AppData\\Local\\Temp\\_MEI109122\\transformers\\__init__.py'
+실행 파일은 아래와 같이 에러가 발생할 것이다.
+RuntimeError: Failed to import transformers.models.wav2vec2.processing_wav2vec2 because of the following error (look up to see its traceback):
+[Errno 2] No such file or directory: 'C:\\Users\\user_name\\AppData\\Local\\Temp\\_MEI109122\\transformers\\__init__.py'
+
+그래서 transformers 폴더만 수작업으로 파일을 옮겨준다. 
 
 수동으로 dist/main_run/transformers 폴더에 C:\Users\<users>\anaconda3\envs\STT\Lib\site-packages\transformers  파일을 모두 옮겨준다.
 pyinstaller에서는 이슈로 인하여 transformers 폴더만 py 파일이 없다.
@@ -187,15 +190,14 @@ pyinstaller에서는 이슈로 인하여 transformers 폴더만 py 파일이 없
 
 ## 7. Reference
 * Model/Code
-   * IBM pytorch-seq2seq (https://github.com/IBM/pytorch-seq2seq)
    * facebook wav2vec-2 (https://ai.facebook.com/blog/wav2vec-20-learning-the-structure-of-speech-from-raw-audio/)
 * Dataset
    * AI Hub open domain dialog speech corpus data: 
-   * KSM [here] https://aihub.or.kr/aidata/30707
+   * KSM [here] (https://aihub.or.kr/aidata/30707)
    * KsponSpeech[here] (https://aihub.or.kr/aidata/105)
    * KlecSpeech [here] (https://aihub.or.kr/aidata/30708)
 * Client
    * pyqt5 swharden's Python-GUI-examples [hear] (https://github.com/swharden/Python-GUI-examples)
-   * pyqt5 
-   * pyinstaller 
+   * pyqt5 main (https://www.riverbankcomputing.com/static/Docs/PyQt5/)
+   * pyinstaller main (https://pyinstaller.org/en/stable/) 
 
