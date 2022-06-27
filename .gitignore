@@ -1,0 +1,17 @@
+# ipynb temp files
+
+./.ipynb_checkpoints
+data_preprocessing/.ipynb_checkpoints
+data_preprocessing/__pycache__
+data_preprocessing/dataset
+client/.ipynb_checkpoints
+client/__pycache__
+clinet/Assets/jamo_base_model
+client/build
+client/dist
+model_training/.ipynb_checkpoints
+model_training/__pycache__
+model_training/dataset
+model_training/wav2vec2-large-xlsr-ko-demo
+test_garbage/.ipynb_checkpoints
+test_garbage/__pycache__
