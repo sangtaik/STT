@@ -96,7 +96,7 @@ class VoiceWorker(QtCore.QObject):
     
         
     def service(self, sig):
-        return self.model.one_shot(np.array(sig).flatten())
+        return self.model.one_shot(np.array(sig).flatten().astype(np.float32))
 
 #     @QtCore.pyqtSlot()
 #     def task_old(self):
@@ -177,6 +177,7 @@ class VoiceWorker(QtCore.QObject):
             self.emit_message("음성 인식 환경을 초기화를 완료화였습니다.")
             with sd.InputStream(samplerate=sr, channels=ch, callback=callback):
                 sig = np.zeros(1,dtype=np.float32)
+                tmp = np.zeros(1,dtype=np.float32)
                 print(sig.dtype)
                 print("running start")
                 self.emit_message("명령을 말씀해주세요.")
@@ -192,14 +193,14 @@ class VoiceWorker(QtCore.QObject):
                         print("saying")
                         start_time = time.time()
                         # time.sleep(1)
-                        speech_sig = np.concatenate((speech_sig,sig))
+                        speech_sig = np.concatenate((speech_sig,tmp))
                         sig_flag = True
                         cnt = 0
 
                     else:
                         if sig_flag:
                             if cnt < pause_cnt:
-                                speech_sig = np.concatenate((speech_sig,sig))
+                                speech_sig = np.concatenate((speech_sig,tmp))
                                 cnt += 1
                             else:
                                 print("STT")
@@ -217,7 +218,7 @@ class VoiceWorker(QtCore.QObject):
                                 sig_flag = False
                                 self.emit_message("명령을 말씀해주세요.")
 
-
+                    tmp = sig
                     sig = np.zeros(1,dtype=np.float32)
 
         except Exception as e:

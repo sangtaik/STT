@@ -70,7 +70,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "PPT 도우미"))
         self.textBrowser.setText(_translate("MainWindow", "audio to text"))
         self.label_2.setText(_translate("MainWindow", "raw data (PCM):"))
         self.label_time.setText(_translate("MainWindow", "Time to text"))
