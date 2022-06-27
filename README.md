@@ -5,8 +5,8 @@
 [Sang-Taik Jung](https://github.com/sangtaik/STT)<sup>1,2</sup>, [Mu-Jun Kim](https://github.com/Mu-jun/STT)<sup>1,3</sup>, [Jae-Youn Park](https://github.com/jayo9901/)<sup>1,4</sup>
 
 <sup>1</sup> K-Digital Training - AI Youngwoo Global Training AI 6th. <p>
-<sup>2</sup> App, Dataset preprocessing <p>
-<sup>3</sup> AI Modeling, AI Training <p>
+<sup>2</sup> Client, Dataset preprocessing <p>
+<sup>3</sup> AI Modeling, AI Training, Audio Signal Processing <p>
 <sup>4</sup> Model Training Calibration, Dataset preprocessing.
 
 
@@ -20,9 +20,12 @@
 * [3. Model](#3-model)
 * [4. Dependency](#4-dependency)
 * [5. Training and Evaluation](#5-training-and-evaluation)
+    + [Run create csv for dateset preprocessing](#run-create-csv-for-dateset-preprocessing)
+    + [Run vocab](#run-vocab)
+    + [Run vocab](#run-vocab)
     + [Run train](#run-train)
     + [Run Client ](#run-client)
-* [6. pyinstaller](#6-pyinstaller)
+* [6. pyinstaller](#6-pyinstaller-for-exe-file))
 * [7. Reference](#7-reference)
 
 
@@ -124,26 +127,38 @@ pipwin==0.5.2
 
 Before training or evaluation, we should be follow the data pipeline as the followed.
 
-```
- - 
-```
-
-
-
-Here is a command line example of the code:
+### Run create csv for dateset preprocessing
 
 ```
- - 
+cd data_preprocessing
+mkdir /dataset/csv/
+mv <what you download something>
+python.exe symspellpy_test.py
+```
+
+
+### Run vocab
+
+
+
+```
+cd data_preprocessing
+python.exe Creating_Vocabulay_fixed.py
 ```
 
 ### Run train
 
 ```
+cd model_training
+python.exe XLSR_Wav2Vec2_jamo.py
 
 ```
 
 ### Run Client ( run by .py)
 ```
+cd client
+mkdir Assets
+cp < ALL Assets and models that What step-(Run train)> 
 python.exe main_run.py
 ```
 
@@ -193,9 +208,9 @@ pyinstaller에서는 이슈로 인하여 transformers 폴더만 py 파일이 없
    * facebook wav2vec-2 (https://ai.facebook.com/blog/wav2vec-20-learning-the-structure-of-speech-from-raw-audio/)
 * Dataset
    * AI Hub open domain dialog speech corpus data: 
-   * KSM [here] (https://aihub.or.kr/aidata/30707)
-   * KsponSpeech[here] (https://aihub.or.kr/aidata/105)
-   * KlecSpeech [here] (https://aihub.or.kr/aidata/30708)
+   ** KSM [here] (https://aihub.or.kr/aidata/30707)
+   ** KsponSpeech[here] (https://aihub.or.kr/aidata/105)
+   ** KlecSpeech [here] (https://aihub.or.kr/aidata/30708)
 * Client
    * pyqt5 swharden's Python-GUI-examples [hear] (https://github.com/swharden/Python-GUI-examples)
    * pyqt5 main (https://www.riverbankcomputing.com/static/Docs/PyQt5/)
