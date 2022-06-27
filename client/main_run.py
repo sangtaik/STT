@@ -96,7 +96,8 @@ class VoiceWorker(QtCore.QObject):
     
         
     def service(self, sig):
-        return self.model.one_shot(np.array(sig).flatten().astype(np.float32))
+#         return self.model.one_shot(np.array(sig).flatten().astype(np.float32))
+        return self.model.one_shot(np.array(sig).flatten())
 
 #     @QtCore.pyqtSlot()
 #     def task_old(self):
