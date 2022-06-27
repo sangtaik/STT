@@ -27,7 +27,10 @@
     + [Run Client ](#run-client)
 * [6. pyinstaller](#6-pyinstaller-for-exe-file))
 * [7. Reference](#7-reference)
-
+* [7. Errors](#8-Errors)
+    + [jiwer install issue](#jiwer-install-issue)
+	+ [pyaudio install issue](#pyaudio-install-issue)
+	+ [No such file <library>\\__init__.py](#No-such-file-<library>\\__init__.py)
 
 
 ## 1. Dataset contribution
@@ -139,8 +142,6 @@ python.exe symspellpy_test.py
 
 ### Run vocab
 
-
-
 ```
 cd data_preprocessing
 python.exe Creating_Vocabulay_fixed.py
@@ -216,3 +217,39 @@ pyinstaller에서는 이슈로 인하여 transformers 폴더만 py 파일이 없
    * pyqt5 main (https://www.riverbankcomputing.com/static/Docs/PyQt5/)
    * pyinstaller main (https://pyinstaller.org/en/stable/) 
 
+
+## 8. Errors
+
+### jiwer install issue
+환경 설정 시, pip install jiwer를 실행할 때 아래와 같은 에러가 발생
+```
+error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": [
+https://visualstudio.microsoft.com/visual-cpp-build-tools/](https://visualstudio.microsoft.com/visual-cpp-build-tools/)`
+```
+- MS Visual C++ 14.0을 설치한다.
+
+### pyaudio가 install issue
+pyaudio가 설치가 안된는 이슈는 아래와 같이 해결한다.
+```
+(STT) C:\Git\STT>pip install pipwin
+(STT) C:\Git\STT>pipwin install pyaudio
+```
+
+### No such file <library>\\__init__.py
+아래와 같이 client 실행 시, 라이브러리 파일 에러가 발생
+```
+[Errno 2] No such file or directory transformers\\__init__.py
+```
+
+해당 이슈는 3rd library 또는 dist 폴더에 py파일이 없는 것이다.
+```
+### windows 
+dir C:\Users\<users>\STT\dist\main_run\transformers
+
+```
+이 현상은 pyinstaller에서 exe 파일을 만들 때, transformers 폴더의 py 파일을 가져오지 못한 현상이라 수작업으로 copy를 해주면 된다.
+
+```
+### windows 
+copy -r C:\Users\<users>\anaconda3\envs\STT\Lib\site-packages\transformers C:\Users\<users>\STT\dist\main_run\transformers
+```
