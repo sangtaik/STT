@@ -73,6 +73,7 @@ if __name__ == "__main__":
         print("threshold :",threshold)
         with sd.InputStream(samplerate=sr, channels=ch, callback=callback):
             sig = np.zeros(1,dtype=np.float32)
+            tmp = np.zeros(1,dtype=np.float32)
             # print(sig.shape, sig,dtype)
             print("running start")
             
@@ -87,20 +88,20 @@ if __name__ == "__main__":
                 if rms(harmonic_sig) > threshold:
                     print("saying")
                     # time.sleep(1)
-                    speech_sig = np.concatenate((speech_sig,sig))
+                    speech_sig = np.concatenate((speech_sig,tmp))
                     sig_flag = True
                     cnt = 0
                 else:
                     if sig_flag:
                         if cnt < pause_cnt:
-                            speech_sig = np.concatenate((speech_sig,sig))
+                            speech_sig = np.concatenate((speech_sig,tmp))
                             cnt += 1
                         else:
                             print("STT")
                             service(speech_sig)
                             speech_sig = np.zeros(1,dtype=np.float32)
                             sig_flag = False
-
+                tmp = sig
                 sig = np.zeros(1,dtype=np.float32)
                 
     except KeyboardInterrupt as ke:
