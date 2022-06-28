@@ -142,7 +142,7 @@ class VoiceWorker(QtCore.QObject):
         ch = 1
         
         sigma_rule_num = 4  # sigma 규칙에 표준편차를 늘려주는 역할
-        pause_cnt = 10
+        pause_cnt = 5
         sig_flag = False
         speech_sig = np.zeros(1,dtype=np.float32)
         
@@ -168,7 +168,8 @@ class VoiceWorker(QtCore.QObject):
             
             # 환경음의 최대값 어디까지인지 구한다.
             # 이 최대값을 벗어나면 사람이 말하는 음성으로 인식할 것이다.
-            threshold = np.min(sig) + (np.std(sig) * sigma_rule_num ) 
+            # 2022-06-28  np.min -> mean으로 변경, 멀리있는 음성 인식은 손해가 되지만 가까운 음성 잡음에 강하게 될 것으로 기대함
+            threshold = np.mean(sig) + (np.std(sig) * sigma_rule_num ) 
             
             print("voice init complete")
             
@@ -204,20 +205,25 @@ class VoiceWorker(QtCore.QObject):
                                 speech_sig = np.concatenate((speech_sig,tmp))
                                 cnt += 1
                             else:
-                                print("STT")
-                                print(time.time()-start_time)
-                                 # 모델에서 판별한 문장이 list로 출력된다.
-                                self.emit_message("명령을 분석하고 있습니다.")
-                                print("Got it! Now to recognize it...")
-                                text_list = self.service(speech_sig)
+                                if len(speech_sig) < sr*7: # 7초 이상 음성은 받지 않는다.
+                                    print("STT")
+                                    print(time.time()-start_time)
+                                     # 모델에서 판별한 문장이 list로 출력된다.
+                                    self.emit_message("명령을 분석하고 있습니다.")
+                                    print("Got it! Now to recognize it...")
+                                    text_list = self.service(speech_sig)
 
-                                text = ''.join(text_list)   # 나오는 것이 list이기 때문에 문장열로 만들어준다.
-                                self.textChanged.emit(text) # text를 textChanged로 정의한 함수에 return해준다.
-                                msg = "You said: {}".format(text)
-                                self.emit_message(msg)
-                                speech_sig = np.zeros(1,dtype=np.float32)
-                                sig_flag = False
-                                self.emit_message("명령을 말씀해주세요.")
+                                    text = ''.join(text_list)   # 나오는 것이 list이기 때문에 문장열로 만들어준다.
+                                    self.textChanged.emit(text) # text를 textChanged로 정의한 함수에 return해준다.
+                                    msg = "You said: {}".format(text)
+                                    self.emit_message(msg)
+                                    speech_sig = np.zeros(1,dtype=np.float32)
+                                    sig_flag = False
+                                    self.emit_message("명령을 말씀해주세요.")
+                                else:
+                                    self.emit_message("긴 대기시간으로 다음 음성을 입력받습니다.")
+                                    speech_sig = np.zeros(1,dtype=np.float32)
+                                    sig_flag = False
 
                     tmp = sig
                     sig = np.zeros(1,dtype=np.float32)
