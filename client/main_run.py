@@ -23,7 +23,6 @@ import SWHear
 # model 생성 및 사운드 입력
 from model import ServiceModel
 # import speech_recognition as sp_rec
-import librosa
 import sounddevice as sd
 from queue import Queue
 from scipy import signal # NumPy와 Scipy를 함께 사용하면 확장 애드온을 포함한 MATLAB을 대체
@@ -51,7 +50,7 @@ def callback(indata, frames, time, status):
     q.put(indata.copy())
 
 
-    
+# import librosa   
 # def hpss(array):
 #     if len(array) > 2048:
 #         stft = librosa.stft(array)
