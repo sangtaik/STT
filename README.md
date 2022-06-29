@@ -93,12 +93,14 @@ Wav2Vec 모델(wav2vec 2.0 - A Framework for Self-Supervised)을 사용하였으
 
 모델에 대한 자세한 내용은 [여기](https://ai.facebook.com/blog/wav2vec-20-learning-the-structure-of-speech-from-raw-audio/)를 참조한다.
 
+또한 모델부분은 https://github.com/Mu-jun/STT에서 자세한 내용을 참조할 수 있다.
 
 The Wav2Vec model(wav2vec 2.0 - A Framework for Self-Supervised) is used, and it is trained by analyzing morphemes by dividing it into Jamo.
 Train by adding biased user voices to the command list.
 
 [Model Link] (https://ai.facebook.com/blog/wav2vec-20-learning-the-structure-of-speech-from-raw-audio/)
 
+if you want to detail history please visit https://github.com/Mu-jun/STT
 
 ## 4. Dependency
 
@@ -131,17 +133,21 @@ pipwin==0.5.2
 Before training or evaluation, we should be follow the data pipeline as the followed.
 
 ### Run create csv for dateset preprocessing
+AI_HUB 또는 wav로 생성된 파일과 txt로 대사를 넣은 파일을 dataset 폴더에 넣고 실행한다.
+예를 들면 ../dataset/audio, ../dataset/text에 각각 wav파일과 txt 파일을 넣어둔다.
+그 후 ../dataset/csv/ 폴더 및 csv파일을 생성하기 위해서 아래와 같이 실행한다.
 
 ```
 cd data_preprocessing
-mkdir /dataset/csv/
+mkdir dataset/csv/
 mv <what you download something>
 python.exe symspellpy_test.py
 ```
 
 
 ### Run vocab
-
+../dataset/csv 파일에서 'Run create csv for dateset preprocessing'에서 생성한 csv 파일을 넣는다.
+그 후 아래와 같이 실행한다.
 ```
 cd data_preprocessing
 python.exe Creating_Vocabulay_fixed.py
@@ -149,11 +155,18 @@ python.exe Creating_Vocabulay_fixed.py
 
 ### Run train
 
+Jamo version  : about 4GB size
 ```
 cd model_training
 python.exe XLSR_Wav2Vec2_jamo.py
 
 ```
+quantization_onnx version : about 300MB size
+```
+cd model_training
+XLSR_Wav2Vec2_model_quantization_onnx.py
+```
+
 
 ### Run Client ( run by .py)
 ```
@@ -164,6 +177,7 @@ python.exe main_run.py
 ```
 
 ## 6. pyinstaller (for exe file)
+Jamo version 
 ```
 1. 아래 명령어를 입력한다. 아직 onefile로 하면 안되고, dist 폴더를 생성하게 하여, 부족한 부분을 채울 수 있도록 일단 1번 exe 파일을 생성한다.
 pyinstaller --noconfirm --clean --distpath ./dist ^
@@ -203,10 +217,119 @@ pyinstaller에서는 이슈로 인하여 transformers 폴더만 py 파일이 없
 ```
 
 
+quantization_onnx version
+```
+양자화된 모델은 transformers, tensorflow, pytorch를 사용하지 않아 라이브러리 추가를 할 필요가 없다.
+
+1. 아래 명령어를 입력한다. 아직 onefile로 하면 안되고, dist 폴더를 생성하게 하여, 부족한 부분을 채울 수 있도록 일단 1번 exe 파일을 생성한다.
+pyinstaller --noconfirm --clean --distpath ./dist ^
+			--add-data="symspell_jamo_dict.txt;." --add-data="Assets/vocab.json;Assets" --add-data="Assets/vocab_jamos.json;Assets"^
+			--add-data="Assets/test_data.wav;Assets" --add-data="Assets/vocab_chars.json;Assets"^
+			--add-data="Assets/jamo_base_model.onnx;Assets"^
+			--copy-metadata=tqdm ^
+			--copy-metadata=regex --copy-metadata=requests ^
+			--copy-metadata=packaging --copy-metadata=filelock --copy-metadata=numpy ^
+			--copy-metadata=tokenizers --copy-metadata=importlib_metadata ^
+			--collect-data=librosa --copy-metadata=librosa ^
+			--hidden-import="sklearn.utils._cython_blas" ^
+			--hidden-import="sklearn.utils._typedefs" ^
+			--hidden-import="sklearn.neighbors._partition_nodes" ^
+			--hidden-import="scipy.special.cython_special" ^
+			main_run.py
+
+dist 폴더가 생성이 되고, dist\\main_run\\Assets에 모델 파일을 옮겨줘야 한다.
+참고로 Assets에 모델은 미리 생성해야 한다. 
+
+모델은 XLSR_Wav2Vec2_model_quantization_onnx.py에서 생성해야 한다.
+
+생성된 모델은 client/dist/main_run/Assets에 추가한다.
+ex) jamo_base_model.onnx
+
+/STT/client/Assets (master)
+$ dir
+jamo_base_model.onnx    symspell_jamo_dict.txt  vocab.json        vocab_jamos.json
+symspell_char_dict.txt  test_data.wav           vocab_chars.json
+
+
+$ cd dist/main_run
+$ ls -lts
+
+Assets/
+filelock-3.7.1.dist-info/
+requests-2.23.0.dist-info/
+packaging-21.3.dist-info/
+numpy-1.21.6.dist-info/
+tokenizers-0.12.1.dist-info/
+regex-2022.6.2.dist-info/
+tqdm-4.64.0.dist-info/
+librosa-0.8.1.dist-info/
+librosa/
+altgraph-0.17.2.dist-info/
+pandas-1.3.5.dist-info/
+setuptools-61.2.0-py3.7.egg-info/
+pyinstaller-5.1.dist-info/
+wheel-0.37.1-py3.9.egg-info/
+importlib_metadata-4.11.4.dist-info/
+tk/
+nbformat/
+tcl/
+tcl8/
+IPython/
+jsonschema-4.6.0.dist-info/
+nbconvert-6.5.0.dist-info/
+certifi/
+sklearn/
+resampy/
+jsonschema/
+boto3/
+pyqtgraph/
+lxml/
+nbconvert/
+parso/
+etc/
+PyQt5/
+sacremoses/
+matplotlib/
+jedi/
+pytz/
+share/
+xruntime/
+editdistpy/
+tokenizers/
+sentencepiece/
+ex/
+aiohttp/
+frozenlist/
+yarl/
+multidict/
+c/
+h5py/
+wrapt/
+google/
+scipy/
+numba/
+yaml/
+xxhash/
+das/
+numpy/
+kiwisolver/
+winpty/
+_argon2_cffi_bindings/
+zmq/
+nado/
+32com/
+kupsafe/
+undfile_data/
+unddevice_data/
+
+그 후 dist\\main_run\\main_run.exe을 실행하면 실행이 된다.
+```
+
 
 ## 7. Reference
 * Model/Code
    * facebook wav2vec-2 (https://ai.facebook.com/blog/wav2vec-20-learning-the-structure-of-speech-from-raw-audio/)
+   * onnx (https://onnxruntime.ai/docs/performance/quantization.html)
 * Dataset
    * AI Hub open domain dialog speech corpus data: 
    ** KSM [here] (https://aihub.or.kr/aidata/30707)
